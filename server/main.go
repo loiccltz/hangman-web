@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"html/template"
+	 hc "hangmanweb/hangman-classic/functions"
 )
+
+
 
 func home(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/home.html"
@@ -14,7 +17,11 @@ func home(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Erreur pendant le parsing", err)
 		return
 	}
-	t.Execute(w, nil)
+	data := hc.Stats{
+		Lives: 10,
+	}
+
+	t.Execute(w, data)
 }
 
 func play(w http.ResponseWriter, r *http.Request) {
