@@ -17,8 +17,10 @@ func home(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Erreur pendant le parsing", err)
 		return
 	}
-	data := hc.Stats{
-		Lives: 10,
+
+	data := GameState {
+		Lives : 10,
+		Word : hc.GetRandomWord(),
 	}
 
 	t.Execute(w, data)
