@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	 gs "hangmanweb/game"
 )
 
 func Word() {
@@ -83,7 +84,7 @@ func Word() {
 
 	for {
 		// j'imprime le mot en blank, le nombre de vie, le nombre de lettres du mot et les lettres déja utiliser
-		fmt.Printf("\n %d ❤️, Word : %s, \n", GetLives(), strings.Join(convertRuneSliceToStringSlice(blanks), " "))
+		fmt.Printf("\n %d ❤️, Word : %s, \n", gs.GetLives(), strings.Join(convertRuneSliceToStringSlice(blanks), " "))
 		fmt.Print("Word of : ", len([]rune(word)), " letters: ", "\n")
 		fmt.Print("You have already used the letters : ", allLetters, "\n")
 
@@ -97,7 +98,7 @@ func Word() {
 
 				// clé ici string	// type donc ici interface
 				"word":           word,
-				"lives":          GetLives(),
+				"lives":          gs.GetLives(),
 				"blanks":         string(blanks), // on stock en string sinon cela ne marche pas avec le JSON
 				"guessedLetters": allLetters,
 				"usedLetters":    string(getKeysFromMap(usedLetters)),
@@ -121,15 +122,15 @@ func Word() {
 		// Permet d'entrer un mot de 2 lettres ou plus
 		if len(input) > 2 {
 			if removeAccents(input) == removeAccents(word) {
-				fmt.Printf("\n %d ❤️, Word: %s - You won, congrats!\n", GetLives(), word)
+				fmt.Printf("\n %d ❤️, Word: %s - You won, congrats!\n", gs.GetLives(), word)
 				break
 			} else {
-				Lives -= 2 // il faut set lives
-				fmt.Printf("\nWrong word! You lost 2 Lives. %d ❤️ remaining.\n", GetLives())
+				gs.SetLives(gs.GetLives() - 2 ) // il faut set lives
+				fmt.Printf("\nWrong word! You lost 2 Lives. %d ❤️ remaining.\n", gs.GetLives())
 				linesDisplayed = showHangman(linesDisplayed)
 				linesDisplayed = showHangman(linesDisplayed)
 
-				if GetLives() <= 0 {
+				if gs.GetLives() <= 0 {
 					fmt.Printf("\n 0 ❤️, Word: %s - Sorry, you lost!\n", word)
 					break
 				}
@@ -168,52 +169,24 @@ func Word() {
 
 				// Si la lettre n'est pas dans le mot on enlève une vie
 				if !correctGuess {
-					fmt.Printf("\nWrong guess! %d ❤️ remaining.\n", GetLives())
+					fmt.Printf("\nWrong guess! %d ❤️ remaining.\n", gs.GetLives())
 					linesDisplayed = showHangman(linesDisplayed)
 				}
 			}
 
 			// si vie = 0 alors on perd
-			if GetLives() <= 0 {
+			if gs.GetLives() <= 0 {
 				fmt.Printf("\n 0 ❤️, Mot: %s - Vous avez perdu!\n", string(wordRunes))
 				break
 			}
 			// if word is guessed, you won
 			if string(wordRunes) == string(blanks) {
-				fmt.Printf("\n %d ❤️, Mot: %s - Vous avez gagné!\n", GetLives(), string(wordRunes))
+				fmt.Printf("\n %d ❤️, Mot: %s - Vous avez gagné!\n", gs.GetLives(), string(wordRunes))
 				break
 			}
 		}
 	}
 }
-
-func GetRandomWord() string {
-	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	var words []string
-	for scanner.Scan() {
-		words = append(words, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return words[rand.Intn(len(words))]
-}
-
-
-func GetLives() int {
-	Lives := 10 // je met la vie a 10
-
-	return Lives
-}
-
 
 func getKeysFromMap(m map[rune]bool) []rune {
 	keys := []rune{}

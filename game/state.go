@@ -1,4 +1,4 @@
-package main
+package state
 
 import (
 	"log"
@@ -18,16 +18,16 @@ var state GameState
 // Initialisation du jeu
 func InitGame() {
 	state.Lives = 10
-	state.Word = getRandomWord()
+	state.Word = GetRandomWord()
 	state.Blanks = make([]rune, len(state.Word))
 	for i := range state.Blanks {
 		state.Blanks[i] = '_'
 	}
 }
 
-// Fonction utilitaire pour obtenir un mot aléatoire depuis le fichier
-func getRandomWord() string {
-	file, err := os.Open("dictionnaries/words.txt")
+// Fonction pour obtenir un mot aléatoire
+func GetRandomWord() string {
+	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,7 +46,7 @@ func getRandomWord() string {
 	return words[rand.Intn(len(words))]
 }
 
-// Getters
+// Getters 
 func GetLives() int {
 	return state.Lives
 }

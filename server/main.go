@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"html/template"
-	 hc "hangmanweb/hangman-classic/functions"
+	// hc "hangmanweb/hangman-classic/functions"
+	 gs "hangmanweb/game"
 )
 
 
@@ -18,9 +19,10 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := GameState {
-		Lives : 10,
-		Word : hc.GetRandomWord(),
+	data := gs.GameState {
+		Lives : gs.GetLives(),
+		Word : gs.GetRandomWord(),
+		Blanks: gs.GetBlanks(),
 	}
 
 	t.Execute(w, data)
