@@ -1,10 +1,10 @@
 package state
 
 import (
+	"bufio"
 	"log"
 	"math/rand"
 	"os"
-	"bufio"
 )
 
 type GameState struct {
@@ -58,6 +58,7 @@ func GetWord() string {
 func GetBlanks() []rune {
 	return state.Blanks
 }
+
 
 // Setters
 func SetLives(lives int) {
