@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"html/template"
+	"net/http"
+	"strings"
+
 	// hc "hangmanweb/hangman-classic/functions"
-	 gs "hangmanweb/game"
+	gs "hangmanweb/game"
 )
 
 
@@ -33,13 +35,21 @@ func play(w http.ResponseWriter, r *http.Request) {
 	}
 
 
+	Blank := gs.GetBlanks()
+
+	// on espace les underscores sinon tout est collé
+	BlankString := strings.Join(strings.Split(string(Blank), ""), " ")
+
 	data := gs.GameState {
 		Lives : gs.GetLives(),
 		Word : gs.GetWord(),
-		Blanks: gs.GetBlanks(),
+		// je fais passer en string sinon cela affiche les runes ( ASCII )
+		Blank: BlankString,
 	}
+
+	// debug
 	println(data.Word)
-	println(data.Blanks)
+	println(string(data.Blanks))
 
 	t.Execute(w, data)
 }

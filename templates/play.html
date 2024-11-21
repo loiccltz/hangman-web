@@ -9,6 +9,38 @@
 <h1 class="test" >
     je joue
 </h1>
+<form action="" method="post" class="play-form" id="userInputForm">
+    <label for="input"> Deviner </label>
+    <input type="text" id="guess" name="input">
+    <button type="submit">button</button>
+</form>
 <h1>{{ .Word }} </h1>
-<h1> {{ .Blanks }}</h1>
+<h1> {{ .Blank }}</h1>
+
+<script>
+    // je selectionne le formulaire
+    const userInputForm = document.getElementById('userInputForm')
+    
+    userInputForm.addEventListener('submit', (event) => { // j'ajoute un evenement quand on submit le form
+
+    // empeche la page detre reload
+    event.preventDefault();
+
+    // je recupere la lettre rentrée par la personne, je supprime les espace avec trim
+    const userInput = document.getElementById('guess').value.trim();
+    
+    if (userInput.length == 1) {
+        console.log(`Lettre devinéé : ${userInput}`);
+    } else {
+        alert('il faut une seule lettre');
+    }
+
+    }) 
+
+    
+    document.getElementById('guess').value = '';
+
+
+
+</script>
 </body>

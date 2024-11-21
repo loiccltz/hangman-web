@@ -8,9 +8,10 @@ import (
 )
 
 type GameState struct {
-	Lives int
+	Lives int 
 	Word  string
 	Blanks []rune
+	Blank string
 }
 
 var state GameState
