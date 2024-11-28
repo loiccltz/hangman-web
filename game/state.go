@@ -8,10 +8,9 @@ import (
 )
 
 type GameState struct {
-	Lives int 
+	Lives int
 	Word  string
 	Blanks []rune
-	Blank string
 }
 
 var state GameState
@@ -60,6 +59,14 @@ func GetBlanks() []rune {
 	return state.Blanks
 }
 
+// permet de convertir les runes en string pour pouvoir les afficher sur le front 
+func GetBlanksDisplay() string {
+    var result []string
+    for _, r := range state.Blanks {
+        result = append(result, string(r))
+    }
+    return strings.Join(result, " ")
+}
 
 // Setters
 func SetLives(lives int) {
