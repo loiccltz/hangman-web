@@ -67,7 +67,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
      if r.Method == http.MethodGet {
          // rendu si method est get
          play(w,r)
-     } else if r.Method == http.MethodPost {
+     } else if r.Method == http.MethodPost{
 		fmt.Println("Méthode POST reçue, traitement en cours...")
          gs.HandleGuess(w,r) // quand le joueur rend un input
     } else {

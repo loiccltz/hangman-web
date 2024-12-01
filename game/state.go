@@ -19,6 +19,8 @@ type GameState struct {
 
 
 
+
+
 var state GameState
 
 // Initialisation du jeu
