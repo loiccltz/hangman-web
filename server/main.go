@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strings"
+	
 
 	// hc "hangmanweb/hangman-classic/functions"
 	gs "hangmanweb/game"
@@ -36,10 +36,10 @@ func play(w http.ResponseWriter, r *http.Request) {
 	}
 
 
-	Blank := gs.GetBlanks()
+//	Blank := gs.GetBlanks()
 
 	// on espace les underscores sinon tout est collé
-	BlankString := strings.Join(strings.Split(string(Blank), ""), " ")
+//	BlankString := strings.Join(strings.Split(string(Blank), ""), " ")
 
 	
 
@@ -62,15 +62,27 @@ func handler(w http.ResponseWriter, r *http.Request){
 	switch r.URL.Path {
 	case "/":
 		home(w,r)
-	case "/play":
-		play(w,r)
 	}
 }
+
+func playHandler(w http.ResponseWriter, r *http.Request) {
+    if r.Method == http.MethodGet {
+        // rendu si method est get
+        play(w, r)
+    } else if r.Method == http.MethodPost {
+        gs.HandleGuess(w, r) // quand le joueur rend un input
+    } else {
+        http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
+    }
+}
+
 
 func main() {
 	fs := http.FileServer(http.Dir("../assets/"))
 	
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/play", playHandler) // création d'une autre fonction car on ne peut pas avoir handleguess et handler en meme temps
+
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.ListenAndServe("", nil)
 	
