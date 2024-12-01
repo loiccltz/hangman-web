@@ -16,7 +16,6 @@ import (
 func home(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/home.html"
 	gs.InitGame()
-	template.ParseFiles(fileName)
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)
@@ -28,7 +27,6 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func play(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/play.html"
-	template.ParseFiles(fileName)
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)
@@ -66,15 +64,16 @@ func handler(w http.ResponseWriter, r *http.Request){
 }
 
 func playHandler(w http.ResponseWriter, r *http.Request) {
-    if r.Method == http.MethodGet {
-        // rendu si method est get
-        play(w, r)
-    } else if r.Method == http.MethodPost {
-        gs.HandleGuess(w, r) // quand le joueur rend un input
+     if r.Method == http.MethodGet {
+         // rendu si method est get
+         play(w,r)
+     } else if r.Method == http.MethodPost {
+		fmt.Println("Méthode POST reçue, traitement en cours...")
+         gs.HandleGuess(w,r) // quand le joueur rend un input
     } else {
-        http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
-    }
-}
+         http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
+     }
+ }
 
 
 func main() {

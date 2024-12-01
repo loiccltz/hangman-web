@@ -4,6 +4,7 @@ import(
 	"net/http"
 	"strings"
 	"encoding/json"
+	"fmt"
 
 
 )
@@ -13,7 +14,7 @@ type GuessRequest struct {
 }
 
 
-    // Préparation de la réponse à renvoyer au client
+   
 type GameStateResponse struct {
 	Blanks string `json:"blanks"`
     Lives  int    `json:"lives"`
@@ -24,13 +25,14 @@ type GameStateResponse struct {
 	  
 	  if r.Method == http.MethodPost {
 		  var guess GuessRequest
+
+		  
   
 		  err := json.NewDecoder(r.Body).Decode(&guess)
 		  if err != nil {
-			  http.Error(w, "Erreur de décodage", http.StatusBadRequest)
+			  http.Error(w, "Invalid JSON", http.StatusBadRequest)
 			  return
 		  }
-  
 
 		  if strings.Contains(state.Word, guess.Letter) {
 			  UpdateBlanks(guess.Letter)
@@ -40,14 +42,16 @@ type GameStateResponse struct {
 
 		  }
   
-		  // Préparer la réponse à envoyer au client
+		 
 		  response := GameStateResponse{
 			  Lives: state.Lives,
 			  Blanks: GetBlanksDisplay(),
 		  }
   
-		  // Répondre avec les informations mises à jour
+		 
+		  fmt.Println("Lettre devinée:", guess.Letter)
 		  w.Header().Set("Content-Type", "application/json")
+		  
 		  json.NewEncoder(w).Encode(response)
   
 	  } else {

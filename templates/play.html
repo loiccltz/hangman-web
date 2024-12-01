@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    
     <link rel="stylesheet" href="../assets/play.css" >
 </head>
 <body>
 <h1 class="test" >
     je joue
 </h1>
-<form action="" method="post" class="play-form" id="userInputForm">
+<form action="" method="post" class="play-form" id="submit">
     <label for="input"> Deviner </label>
-    <input type="text" id="guess" name="input">
-    <button onclick="sendGuess()" >button</button>
+    <input type="text" id="guess" name="letter">
+    <button type="button" id="guess" onclick="sendGuess()" >button</button>
 </form>
 <h1>{{ .Word }} </h1>
 <h1> {{ .BlanksDisplay }}</h1>
@@ -21,9 +22,11 @@
 
     function sendGuess() {
        // recuperer l'input  
+     event.preventDefault();
     const userInput = document.getElementById("guess").value; 
     const data = { letter: userInput };
-
+    
+    
     fetch("/play", {
         method: "POST",
         headers: {
@@ -35,19 +38,18 @@
     .then(data => {
         // metttre les underscore a jour
         document.getElementById("blanks").textContent = data.blanks;
+        
 
-        // Optionnel : mettre à jour les vies
         document.getElementById("lives").textContent = `Vies restantes : ${data.lives}`;
-
+        
         // vide le champs de l'input a chaque essai
-        document.getElementById("guess").value = "";
+        console.log("Données envoyées :", JSON.stringify(data));
+
     })
     .catch(error => {
         console.error('Erreur:', error);
     });
 }
-
-
 
 </script>
 </body>

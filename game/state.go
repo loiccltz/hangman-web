@@ -18,6 +18,7 @@ type GameState struct {
 }
 
 
+
 var state GameState
 
 // Initialisation du jeu
@@ -30,7 +31,7 @@ func InitGame() {
 	}
 }
 
-// Fonction pour obtenir un mot aléatoire
+
 func GetRandomWord() string {
 	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
 	if err != nil {
