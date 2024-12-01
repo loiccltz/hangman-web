@@ -5,13 +5,18 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strings"
+
+
 )
 
 type GameState struct {
 	Lives int
 	Word  string
 	Blanks []rune
+	BlanksDisplay string
 }
+
 
 var state GameState
 
@@ -66,6 +71,14 @@ func GetBlanksDisplay() string {
         result = append(result, string(r))
     }
     return strings.Join(result, " ")
+}
+
+func UpdateBlanks(letter string) {
+    for i, char := range state.Word {
+        if string(char) == letter {
+            state.Blanks[i] = rune(letter[0]) // Remplace l'underscore par la lettre
+        }
+    }
 }
 
 // Setters

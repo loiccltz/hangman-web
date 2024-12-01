@@ -12,33 +12,40 @@
 <form action="" method="post" class="play-form" id="userInputForm">
     <label for="input"> Deviner </label>
     <input type="text" id="guess" name="input">
-    <button type="submit">button</button>
+    <button onclick="sendGuess()" >button</button>
 </form>
 <h1>{{ .Word }} </h1>
-<h1> {{ .Blank }}</h1>
+<h1> {{ .BlanksDisplay }}</h1>
 
 <script>
-    // je selectionne le formulaire
-    const userInputForm = document.getElementById('userInputForm')
-    
-    userInputForm.addEventListener('submit', (event) => { // j'ajoute un evenement quand on submit le form
 
-    // empeche la page detre reload
-    event.preventDefault();
+    function sendGuess() {
+       // recuperer l'input  
+    const userInput = document.getElementById("guess").value; 
+    const data = { letter: userInput };
 
-    // je recupere la lettre rentrée par la personne, je supprime les espace avec trim
-    const userInput = document.getElementById('guess').value.trim();
-    
-    if (userInput.length == 1) {
-        console.log(`Lettre devinéé : ${userInput}`);
-    } else {
-        alert('il faut une seule lettre');
-    }
+    fetch("/play", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // metttre les underscore a jour
+        document.getElementById("blanks").textContent = data.blanks;
 
-    }) 
+        // Optionnel : mettre à jour les vies
+        document.getElementById("lives").textContent = `Vies restantes : ${data.lives}`;
 
-    
-    document.getElementById('guess').value = '';
+        // vide le champs de l'input a chaque essai
+        document.getElementById("guess").value = "";
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+    });
+}
 
 
 
