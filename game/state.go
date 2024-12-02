@@ -5,13 +5,21 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strings"
+
+
 )
 
 type GameState struct {
 	Lives int
 	Word  string
 	Blanks []rune
+	BlanksDisplay string
 }
+
+
+
+
 
 var state GameState
 
@@ -25,7 +33,7 @@ func InitGame() {
 	}
 }
 
-// Fonction pour obtenir un mot aléatoire
+
 func GetRandomWord() string {
 	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
 	if err != nil {
@@ -59,6 +67,22 @@ func GetBlanks() []rune {
 	return state.Blanks
 }
 
+// permet de convertir les runes en string pour pouvoir les afficher sur le front 
+func GetBlanksDisplay() string {
+    var result []string
+    for _, r := range state.Blanks {
+        result = append(result, string(r))
+    }
+    return strings.Join(result, " ")
+}
+
+func UpdateBlanks(letter string) {
+    for i, char := range state.Word {
+        if string(char) == letter {
+            state.Blanks[i] = rune(letter[0]) // Remplace l'underscore par la lettre
+        }
+    }
+}
 
 // Setters
 func SetLives(lives int) {

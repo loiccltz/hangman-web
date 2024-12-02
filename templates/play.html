@@ -3,12 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    
     <link rel="stylesheet" href="../assets/play.css" >
 </head>
 <body>
 <h1 class="test" >
     je joue
 </h1>
-<h1>{{ .Word }} </h1>
-<h1> {{ .Blanks }}</h1>
+<form action=""  class="play-form" id="userInputForm" onsubmit="sendGuess(event)">
+    <label for="input"> Deviner </label>
+    <input type="text" id="guess" name="letter">
+    <button type="submit">button</button>
+</form>
+<h1 >{{ .Word }} </h1>
+<h1 id="blanks"> {{ .BlanksDisplay }}</h1>
+<h1 id="lives"></h1> 
+
+<script>
+
+function sendGuess(event) {
+    event.preventDefault(); // emepche le rechargement de la page
+
+    const userInput = document.getElementById("guess").value;  // recupere l'input
+    const data = { letter: userInput };
+
+    console.log(data)
+
+    fetch("/play", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Réponse JSON :", data);
+  
+        // mettre a jour la vue
+        document.getElementById("blanks").textContent = data.blanks;
+        document.getElementById("lives").textContent = `Vies restantes : ${data.lives}`;
+        document.getElementById("guess").value = ""; // vidé l'input achaque essaie
+    })
+    .catch(error => {
+        console.error("Erreur :", error.message);
+    });
+}
+
+</script>
 </body>
