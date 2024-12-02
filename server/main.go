@@ -68,7 +68,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
          // rendu si method est get
          play(w,r)
      } else if r.Method == http.MethodPost{
-		fmt.Println("Méthode POST reçue, traitement en cours...")
+		fmt.Println("Méthode bien passé")
          gs.HandleGuess(w,r) // quand le joueur rend un input
     } else {
          http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
