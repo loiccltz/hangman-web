@@ -12,6 +12,7 @@ import(
 type GameStateResponse struct {
 	Blanks string `json:"blanks"`
     Lives  int    `json:"lives"`
+	HangmanArt string `json:"hangmanArt"`
   }
 
   type GuessRequest struct {
@@ -38,11 +39,17 @@ type GameStateResponse struct {
 		  } else {
 			  state.Lives--
 		  }
+
+			maxLives := 10
+			stage := maxLives - state.Lives
+			hangmanArt := showHangman(stage)
+
   
 		 
 		  response := GameStateResponse{
 			  Lives: state.Lives,
 			  Blanks: GetBlanksDisplay(),
+			  HangmanArt: hangmanArt,
 		  }
   
 		 

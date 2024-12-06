@@ -10,15 +10,15 @@
     <canvas id="canvas">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
     <canvas id="canvas2">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
     <div class="container"> 
-        <form action=""  class="play-form" id="userInputForm" onsubmit="sendGuess(event)">
-            <label for="input"> Deviner </label>
-            <input type="text" id="guess" name="letter">
-            <input type="text" id="guess" name="text" class="input" placeholder="Write a message">
-            <button type="submit">button</button>
-        </form>
-        <h1 >{{ .Word }} </h1>
-        <h1 id="blanks" class="oui"> {{ .BlanksDisplay }}</h1>
-        <h1 id="lives"></h1> 
+       <container class="container-play">
+           <pre id="hangmanArt" class="hangman"></pre>
+           <h1 id="blanks" class="oui"> {{ .BlanksDisplay }}</h1>
+           <form action=""  class="play-form" id="userInputForm" onsubmit="sendGuess(event)">
+               <input type="text" id="guess" name="letter">
+               <button type="submit">button</button>
+            </form>
+            <h1 id="lives" class="center"></h1> 
+       </container> 
       </button>
     </div>
 
@@ -52,6 +52,7 @@ function sendGuess(event) {
         document.getElementById("blanks").textContent = data.blanks;
         document.getElementById("lives").textContent = `Vies restantes : ${data.lives}`;
         document.getElementById("guess").value = ""; // vidé l'input achaque essaie
+        document.getElementById("hangmanArt").textContent = data.hangmanArt;
     })
     .catch(error => {
         console.error("Erreur :", error.message);

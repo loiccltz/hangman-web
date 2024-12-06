@@ -33,6 +33,46 @@ func InitGame() {
 	}
 }
 
+// fonction utilisé pour le hangman de base 
+func showHangman(stage int) string {
+	hangmanFile, err := os.Open("../hangman-classic/dictionnaries/hangman.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer hangmanFile.Close()
+
+	scanner := bufio.NewScanner(hangmanFile)
+	linesPerStage := 8 
+
+	startLine := stage * linesPerStage // la ligne de début pour cette étape
+	endLine := startLine + linesPerStage
+
+	currentLine := 0
+	hangmanArt := ""
+
+	for scanner.Scan() {
+		
+		if currentLine < startLine {
+			currentLine++
+			continue
+		}
+	
+		if currentLine >= endLine {
+			break
+		}
+
+		hangmanArt += scanner.Text() + "\n"
+		currentLine++
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return hangmanArt
+}
+
+
 
 func GetRandomWord() string {
 	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
