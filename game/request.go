@@ -39,11 +39,17 @@ type GameStateResponse struct {
 		  } else {
 			  state.Lives--
 		  }
-
-			maxLives := 10
-			stage := maxLives - state.Lives
-			hangmanArt := showHangman(stage)
-
+		  
+		  maxLives := 9
+		  stage := maxLives - state.Lives
+		  hangmanArt := showHangman(stage)
+		  
+		  
+		  if state.Lives == 0 {
+			fmt.Println("Vies à 0, redirection vers /lose")
+			http.Redirect(w, r, "/lose", http.StatusSeeOther)
+			return
+		}
   
 		 
 		  response := GameStateResponse{

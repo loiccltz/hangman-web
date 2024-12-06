@@ -42,6 +42,15 @@ function sendGuess(event) {
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP Error: ${response.status}`);
+
+            if (response.status === 303) {
+            window.location.href = '/lose';  // Redirection manuelle
+        } else if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        
         }
         return response.json();
     })
@@ -51,8 +60,8 @@ function sendGuess(event) {
         // mettre a jour la vue
         document.getElementById("blanks").textContent = data.blanks;
         document.getElementById("lives").textContent = `Vies restantes : ${data.lives}`;
-        document.getElementById("guess").value = ""; // vidé l'input achaque essaie
         document.getElementById("hangmanArt").textContent = data.hangmanArt;
+        document.getElementById("guess").value = ""; // vidé l'input achaque essaie
     })
     .catch(error => {
         console.error("Erreur :", error.message);
