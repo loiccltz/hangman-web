@@ -57,7 +57,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 }
 
 func lose(w http.ResponseWriter, r *http.Request) {
-	var fileName = "../templates/play.html"
+	var fileName = "../templates/lose.html"
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)
