@@ -56,11 +56,23 @@ func play(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, data)
 }
 
+func lose(w http.ResponseWriter, r *http.Request) {
+	var fileName = "../templates/play.html"
+	t, err := template.ParseFiles(fileName)
+	if err != nil {
+		fmt.Println("Erreur pendant le parsing", err)
+		return
+	}
+}
+
 func handler(w http.ResponseWriter, r *http.Request){
 	switch r.URL.Path {
 	case "/":
 		home(w,r)
 	}
+	case "/":
+		lose(w,r)
+
 }
 
 func playHandler(w http.ResponseWriter, r *http.Request) {
@@ -81,6 +93,7 @@ func main() {
 	
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/play", playHandler) // création d'une autre fonction car on ne peut pas avoir handleguess et handler en meme temps
+	http.HandleFunc("/lose", handler)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.ListenAndServe("", nil)
