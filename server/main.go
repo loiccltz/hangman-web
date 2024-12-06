@@ -63,15 +63,16 @@ func lose(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Erreur pendant le parsing", err)
 		return
 	}
+	t.Execute(w, nil)
 }
 
 func handler(w http.ResponseWriter, r *http.Request){
 	switch r.URL.Path {
 	case "/":
 		home(w,r)
-	}
-	case "/":
+	case "/lose":
 		lose(w,r)
+	}
 
 }
 
