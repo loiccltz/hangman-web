@@ -53,6 +53,9 @@ function sendGuess(event) {
         document.getElementById("lives").textContent = `Vies restantes : ${data.lives}`;
         document.getElementById("guess").value = ""; // vidé l'input achaque essaie
         document.getElementById("hangmanArt").textContent = data.hangmanArt;
+        if (data.gameOver) {
+            window.location.href = "/lose";
+        }
     })
     .catch(error => {
         console.error("Erreur :", error.message);

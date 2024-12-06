@@ -83,6 +83,11 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
      } else if r.Method == http.MethodPost{
 		fmt.Println("Méthode bien passé")
          gs.HandleGuess(w,r) // quand le joueur rend un input
+		 if gs.GetLives() <= 0 {
+            // Redirection vers la page de "lose"
+            http.Redirect(w, r, "/lose", http.StatusSeeOther)
+            return
+        }
     } else {
          http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
      }

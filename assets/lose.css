@@ -14,13 +14,11 @@ body {
 
 .oui 
 
-.container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Pour centrer verticalement sur toute la hauteur de la page */
 }
 
 button {
@@ -38,6 +36,7 @@ button {
     padding: 0;
     border: none;
     cursor: pointer;
+    
   }
   
   /* button styling */

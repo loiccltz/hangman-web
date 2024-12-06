@@ -13,6 +13,7 @@ type GameStateResponse struct {
 	Blanks string `json:"blanks"`
     Lives  int    `json:"lives"`
 	HangmanArt string `json:"hangmanArt"`
+	GameOver    bool   `json:"gameOver"`
   }
 
   type GuessRequest struct {
@@ -50,6 +51,7 @@ type GameStateResponse struct {
 			  Lives: state.Lives,
 			  Blanks: GetBlanksDisplay(),
 			  HangmanArt: hangmanArt,
+			  GameOver: GetLives() <= 0,
 		  }
   
 		 
