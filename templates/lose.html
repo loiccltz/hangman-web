@@ -38,6 +38,7 @@
         canvas.width = canvas2.width = cw;
         canvas.height = canvas2.height = ch;
     
+        var colorTransition = 0;
     
         function randomInt( min, max ) {
             return Math.floor(Math.random() * ( max - min ) + min);
@@ -62,8 +63,12 @@
           ctx2.fillStyle = "rgba(199,255,255,0.8)";
           ctx2.font = fontSize+"px san-serif";
           ctx2.fillText(this.value,this.x,this.y);
-    
-            ctx.fillStyle = "#0F0";
+
+          var r = Math.min(255, Math.floor(colorTransition * 255)); // Augmente les rouge
+          var g = Math.max(0, 255 - Math.floor(colorTransition * 255)); // Réduit les vert
+          var b = 0;
+
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
             ctx.font = fontSize+"px san-serif";
             ctx.fillText(this.value,this.x,this.y);
     
@@ -96,6 +101,11 @@
             fallingCharArr[i].draw(ctx);
             var v = fallingCharArr[i];
           }
+
+        // augmente progressivement la transition de couleur
+        if (colorTransition < 1) {
+            colorTransition += 0.01; // vitesse de la transition
+        }
     
           requestAnimationFrame(update);
         }
