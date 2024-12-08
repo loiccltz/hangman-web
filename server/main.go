@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	
+	"strings"
 
 	// hc "hangmanweb/hangman-classic/functions"
 	gs "hangmanweb/game"
-
 )
-
-
 
 func home(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/home.html"
@@ -33,25 +30,16 @@ func play(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Vérifie la victoire avant d'exécuter la page
-	if gs.GetBlanksDisplay() == "" { // Suppose que la fonction retourne une chaîne vide si aucun blanc n'existe
-		http.Redirect(w, r, "/win", http.StatusSeeOther)
-		return
-	}
-
-//	Blank := gs.GetBlanks()
+	//	Blank := gs.GetBlanks()
 
 	// on espace les underscores sinon tout est collé
-//	BlankString := strings.Join(strings.Split(string(Blank), ""), " ")
+	//	BlankString := strings.Join(strings.Split(string(Blank), ""), " ")
 
-	
-
-	data := gs.GameState {
-		Lives : gs.GetLives(),
-		Word : gs.GetWord(),
+	data := gs.GameState{
+		Lives: gs.GetLives(),
+		Word:  gs.GetWord(),
 		// je fais passer en string sinon cela affiche les runes ( ASCII )
-		BlanksDisplay : gs.GetBlanksDisplay(),
-
+		BlanksDisplay: gs.GetBlanksDisplay(),
 	}
 
 	// debug
@@ -61,8 +49,8 @@ func play(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, data)
 }
 
-func win(w http.ResponseWriter, r *http.Request) {
-	var fileName = "../templates/style.html"
+func lose(w http.ResponseWriter, r *http.Request) {
+	var fileName = "../templates/lose.html"
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)
@@ -71,42 +59,69 @@ func win(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
-func handler(w http.ResponseWriter, r *http.Request){
+func win(w http.ResponseWriter, r *http.Request) {
+	var fileName = "../templates/win.html"
+	t, err := template.ParseFiles(fileName)
+	if err != nil {
+		fmt.Println("Erreur pendant le parsing", err)
+		return
+	}
+	t.Execute(w, nil)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
-		home(w,r)
-	default:
-		http.NotFound(w, r)
+		home(w, r)
+
+	case "/lose":
+		lose(w, r)
+
+	case "/win":
+		win(w, r)
 	}
 }
 
-
 func playHandler(w http.ResponseWriter, r *http.Request) {
-     if r.Method == http.MethodGet {
-         // rendu si method est get
-         play(w,r)
-     } else if r.Method == http.MethodPost{
+	if r.Method == http.MethodGet {
+		// rendu si method est get
+		play(w, r)
+	} else if r.Method == http.MethodPost {
 		fmt.Println("Méthode bien passé")
-         gs.HandleGuess(w,r) // quand le joueur rend un input
-		 http.Redirect(w, r, "/play", http.StatusSeeOther)
-    } else {
-         http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
-     }
- }
+		gs.HandleGuess(w, r) // quand le joueur rend un input
 
- func winHandler(w http.ResponseWriter, r *http.Request) {
-	win(w, r)
+		// Debug
+		fmt.Println("Mot à trouver :", gs.GetWord())
+		fmt.Println("Blanks affichés :", gs.GetBlanksDisplay())
+		fmt.Println("Blanks nettoyés :", strings.ReplaceAll(gs.GetBlanksDisplay(), " ", ""))
+		fmt.Println("Vies restantes :", gs.GetLives())
+
+		if gs.GetLives() <= 0 {
+			// Redirection vers la page de "lose"
+			http.Redirect(w, r, "/lose", http.StatusSeeOther)
+			return
+		}
+
+		if strings.ReplaceAll(gs.GetBlanksDisplay(), " ", "") == gs.GetWord() {
+			fmt.Println("Mot trouvé avec succès !") // montre si le mot est trouvé
+			http.Redirect(w, r, "/win", http.StatusSeeOther) // Redirection vers la page "win"
+			return
+		}
+
+	} else {
+		http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
+	}
 }
-
 
 func main() {
 	fs := http.FileServer(http.Dir("../assets/"))
-	
+
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/play", playHandler) // création d'une autre fonction car on ne peut pas avoir handleguess et handler en meme temps
-	http.HandleFunc("/win", winHandler)
+	http.HandleFunc("/lose", handler)
+	http.HandleFunc("/win", handler)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.ListenAndServe(":8080", nil)
-	
+
 }
