@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strings"
 
@@ -47,6 +48,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	println(string(data.Blanks))
 
 	t.Execute(w, data)
+	return
 }
 
 func lose(w http.ResponseWriter, r *http.Request) {
@@ -69,23 +71,11 @@ func win(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		home(w, r)
-
-	case "/lose":
-		lose(w, r)
-
-	case "/win":
-		win(w, r)
-	}
-}
-
 func playHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		// rendu si method est get
 		play(w, r)
+
 	} else if r.Method == http.MethodPost {
 		fmt.Println("Méthode bien passé")
 		gs.HandleGuess(w, r) // quand le joueur rend un input
@@ -98,14 +88,16 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 
 		if gs.GetLives() <= 0 {
 			// Redirection vers la page de "lose"
-			http.Redirect(w, r, "/lose", http.StatusSeeOther)
+			Red("/lose", w, r)
 			return
 		}
 
 		if strings.ReplaceAll(gs.GetBlanksDisplay(), " ", "") == gs.GetWord() {
-			fmt.Println("Mot trouvé avec succès !") // montre si le mot est trouvé
-			http.Redirect(w, r, "/win", http.StatusSeeOther) // Redirection vers la page "win"
-			return
+			fmt.Println("Mot trouvé avec succès !") // Debug
+			fmt.Printf("Comparaison: '%s' == '%s'\n", strings.ReplaceAll(gs.GetBlanksDisplay(), " ", ""), gs.GetWord())
+
+			// Redirection vers la page "win"
+			Red("/win", w, r)
 		}
 
 	} else {
@@ -113,15 +105,22 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func Red(s string, w http.ResponseWriter, r *http.Request) int {
+	log.Println("Méthode:", r.Method, "URL:", r.URL.Path, "Statut:", http.StatusOK)
+	http.Redirect(w, r, s, http.StatusSeeOther)
+	return 0
+}
+
 func main() {
 	fs := http.FileServer(http.Dir("../assets/"))
 
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/", home)
 	http.HandleFunc("/play", playHandler) // création d'une autre fonction car on ne peut pas avoir handleguess et handler en meme temps
-	http.HandleFunc("/lose", handler)
-	http.HandleFunc("/win", handler)
+	http.HandleFunc("/lose", lose)
+	http.HandleFunc("/win", win)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	fmt.Println("Serveur démarré sur le port 8080")
 	http.ListenAndServe(":8080", nil)
 
 }
