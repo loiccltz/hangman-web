@@ -7,7 +7,7 @@ body {
     position:absolute;
     }
 
-.lien {
+.lien, a { /* enlever les style de base*/
   color: inherit;
   text-decoration: none;
 }
@@ -19,7 +19,30 @@ body {
     background-color: transparent;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
+
+/* ----- difficulté ------  */
+.hidden {
+  display: none;
+}
+
+
+
+.difficulty-button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #36d10f;
+}
+
+#difficulty-buttons {
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+/* ----- ------  */
 
 button {
     height: 20px;
@@ -29,7 +52,7 @@ button {
 
 /* From Uiverse.io by satyamchaudharydev */ 
 /* === removing default button style ===*/
-.button {
+.hangman-button {
     margin: 0;
     height: auto;
     background: transparent;
@@ -39,7 +62,7 @@ button {
   }
   
   /* button styling */
-  .button {
+  .hangman-button {
     --border-right: 6px;
     --text-stroke-color: rgba(255,255,255,0.6);
     --animation-color: #36d10f;
@@ -67,7 +90,7 @@ button {
     -webkit-text-stroke: 1px var(--animation-color);
   }
   /* hover */
-  .button:hover .hover-text {
+  .hangman-button:hover .hover-text {
     width: 100%;
     filter: drop-shadow(0 0 23px var(--animation-color))
   }
