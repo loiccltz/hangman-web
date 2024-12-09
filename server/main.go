@@ -15,7 +15,14 @@ import (
 
 func home(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/home.html"
-	gs.InitGame()
+
+	difficulty := r.URL.Query().Get("difficulty")
+	if difficulty == "" {
+		difficulty = "easy" // Par défaut à "easy" si aucune difficulté n'est fournie
+	}
+
+	gs.InitGame(difficulty) // charge la partie avec la difficulté récup grace a "r.URL.Query().Get"
+
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)
