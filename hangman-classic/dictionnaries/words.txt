@@ -9,12 +9,12 @@ coin
 couloir
 dossier
 eau
-école
+ecole
 ecriture
 entree
 escalier
 etagere
-étude
+etude
 exterieur
 fenetre
 interieur
@@ -35,4 +35,3 @@ rampe
 recreation
 rentree
 toilette
-là

@@ -88,9 +88,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			// Redirection vers la page de "lose"
 			http.Redirect(w, r, "/lose", http.StatusSeeOther)
 			return
-		}
-
-		if strings.ReplaceAll(gs.GetBlanksDisplay(), " ", "") == gs.GetWord() {
+		} else if gs.GameWin {
 			fmt.Println("Mot trouvé avec succès !") // Debug
 			fmt.Printf("Comparaison: '%s' == '%s'\n", strings.ReplaceAll(gs.GetBlanksDisplay(), " ", ""), gs.GetWord())
 

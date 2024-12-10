@@ -6,20 +6,14 @@ import (
 	"math/rand"
 	"os"
 	"strings"
-
-
 )
 
 type GameState struct {
-	Lives int
-	Word  string
-	Blanks []rune
+	Lives         int
+	Word          string
+	Blanks        []rune
 	BlanksDisplay string
 }
-
-
-
-
 
 var state GameState
 
@@ -33,6 +27,44 @@ func InitGame() {
 	}
 }
 
+// fonction utilisé pour le hangman de base
+func showHangman(stage int) string {
+	hangmanFile, err := os.Open("../hangman-classic/dictionnaries/hangman.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer hangmanFile.Close()
+
+	scanner := bufio.NewScanner(hangmanFile)
+	linesPerStage := 8
+
+	startLine := stage * linesPerStage // la ligne de début pour cette étape
+	endLine := startLine + linesPerStage
+
+	currentLine := 0
+	hangmanArt := ""
+
+	for scanner.Scan() {
+
+		if currentLine < startLine {
+			currentLine++
+			continue
+		}
+
+		if currentLine >= endLine {
+			break
+		}
+
+		hangmanArt += scanner.Text() + "\n"
+		currentLine++
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return hangmanArt
+}
 
 func GetRandomWord() string {
 	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
@@ -54,7 +86,7 @@ func GetRandomWord() string {
 	return words[rand.Intn(len(words))]
 }
 
-// Getters 
+// Getters
 func GetLives() int {
 	return state.Lives
 }
@@ -67,21 +99,21 @@ func GetBlanks() []rune {
 	return state.Blanks
 }
 
-// permet de convertir les runes en string pour pouvoir les afficher sur le front 
+// permet de convertir les runes en string pour pouvoir les afficher sur le front
 func GetBlanksDisplay() string {
-    var result []string
-    for _, r := range state.Blanks {
-        result = append(result, string(r))
-    }
-    return strings.Join(result, " ")
+	var result []string
+	for _, r := range state.Blanks {
+		result = append(result, string(r))
+	}
+	return strings.Join(result, " ")
 }
 
 func UpdateBlanks(letter string) {
-    for i, char := range state.Word {
-        if string(char) == letter {
-            state.Blanks[i] = rune(letter[0]) // Remplace l'underscore par la lettre
-        }
-    }
+	for i, char := range state.Word {
+		if string(char) == letter {
+			state.Blanks[i] = rune(letter[0]) // Remplace l'underscore par la lettre
+		}
+	}
 }
 
 // Setters

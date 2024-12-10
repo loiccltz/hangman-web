@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <title>Hangman Web</title>
+        
+        <link rel="stylesheet" type="text/css" href="../assets/lose.css">
+  </head>
+  <body>
+      
+    
+      <canvas id="canvas">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
+      <canvas id="canvas2">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
+      <div class="container"> 
+        <button class="button" data-text="Awesome">   
+          <a class="lien" href="/">
+            <span class="actual-text">&nbsp;REJOUER&nbsp;</span>
+            <span aria-hidden="true" class="hover-text">&nbsp;REJOUER&nbsp;</span>     
+          </a>
+
+        </button>
+
+      </div>
+      <h2 style="display: block; visibility: visible; color: rgb(255, 0, 0); font-size: 3rem; text-align: center;">Tu as perdu</h2>
+    </body>
+    <script>
+        var canvas = document.getElementById( 'canvas' ),
+            ctx = canvas.getContext( '2d' ),
+        canvas2 = document.getElementById( 'canvas2' ),
+        ctx2 = canvas2.getContext( '2d' ),
+            // full screen dimensions
+            cw = window.innerWidth,
+            ch = window.innerHeight,f
+    
+        function randomFloat( min, max ) {
+            return Math.random() * ( max - min ) + min;
+        }
+    
+        function Point(x,y)
+        {
+          this.x = x;
+          this.y = y;
+        }
+    
+        Point.prototype.draw = function(ctx){
+    
+          this.value = charArr[randomInt(0,charArr.length-1)].toUpperCase();
+          this.speed = randomFloat(1,8);
+    
+    
+          ctx2.fillStyle = "rgba(199,255,255,0.8)";
+          ctx2.font = fontSize+"px san-serif";
+          ctx2.fillText(this.value,this.x,this.y);
+
+          var r = Math.min(255, Math.floor(colorTransition * 255)); // Augmente les rouge
+          var g = Math.max(0, 255 - Math.floor(colorTransition * 255)); // Réduit les vert
+          var b = 0;
+
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            ctx.font = fontSize+"px san-serif";
+            ctx.fillText(this.value,this.x,this.y);
+    
+    
+    
+            this.y += this.speed;
+            if(this.y > ch)
+            {
+              this.y = randomFloat(-100,0);
+              this.speed = randomFloat(2,5);
+            }
+        }
+    
+        for(var i = 0; i < maxColums ; i++) {
+          fallingCharArr.push(new Point(i*fontSize,randomFloat(-500,0)));
+        }
+    
+    
+        var update = function()
+        {
+    
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
+        ctx.fillRect(0,0,cw,ch);
+    
+        ctx2.clearRect(0,0,cw,ch);
+    
+          var i = fallingCharArr.length;
+    
+          while (i--) {
+            fallingCharArr[i].draw(ctx);
+            var v = fallingCharArr[i];
+          }
+
+        // augmente progressivement la transition de couleur
+        if (colorTransition < 1) {
+            colorTransition += 0.01; // vitesse de la transition
+        }
+    
+          requestAnimationFrame(update);
+        }
+    
+      update();
+    </script>
+    </html>

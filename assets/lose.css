@@ -12,6 +12,8 @@ body {
   text-decoration: none;
 }
 
+.oui 
+
 .button-container {
   display: flex;
   justify-content: center;
@@ -41,7 +43,7 @@ button {
   .button {
     --border-right: 6px;
     --text-stroke-color: rgba(255,255,255,0.6);
-    --animation-color: #00b7ff;
+    --animation-color: #ca0919;
     --fs-size: 2em;
     letter-spacing: 3px;
     text-decoration: none;
