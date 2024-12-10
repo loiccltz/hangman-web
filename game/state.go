@@ -80,9 +80,9 @@ func GetRandomWord(difficulty string) string {
 	case "easy":
 		filePath = "../hangman-classic/dictionnaries/words.txt" // easy
 	case "medium":
-		filePath = "../hangman-classic/dictionnaries/words.txt" // medium
+		filePath = "../hangman-classic/dictionnaries/wordsMedium.txt" // medium
 	case "hard":
-		filePath = "../hangman-classic/dictionnaries/words.txt" // hard
+		filePath = "../hangman-classic/dictionnaries/wordsHard.txt" // hard
 	}
 
 	file, err := os.Open(filePath)
