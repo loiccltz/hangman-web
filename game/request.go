@@ -14,6 +14,7 @@ type GameStateResponse struct {
     Lives  int    `json:"lives"`
 	HangmanArt string `json:"hangmanArt"`
 	GameOver    bool   `json:"gameOver"`
+	GameWin    bool   `json:"gameWin"`
   }
 
   type GuessRequest struct {
@@ -41,6 +42,8 @@ type GameStateResponse struct {
 			  state.Lives--
 		  }
 
+		  IsWin := !strings.Contains(string(state.Blanks), "_")
+
 			maxLives := 10
 			stage := maxLives - state.Lives
 			hangmanArt := showHangman(stage)
@@ -52,6 +55,7 @@ type GameStateResponse struct {
 			  Blanks: GetBlanksDisplay(),
 			  HangmanArt: hangmanArt,
 			  GameOver: GetLives() <= 0,
+			  GameWin:   IsWin,
 		  }
   
 		 
