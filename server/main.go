@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 
@@ -48,7 +47,6 @@ func play(w http.ResponseWriter, r *http.Request) {
 	println(string(data.Blanks))
 
 	t.Execute(w, data)
-	return
 }
 
 func lose(w http.ResponseWriter, r *http.Request) {
@@ -88,7 +86,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 
 		if gs.GetLives() <= 0 {
 			// Redirection vers la page de "lose"
-			Red("/lose", w, r)
+			http.Redirect(w, r, "/lose", http.StatusSeeOther)
 			return
 		}
 
@@ -97,18 +95,13 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("Comparaison: '%s' == '%s'\n", strings.ReplaceAll(gs.GetBlanksDisplay(), " ", ""), gs.GetWord())
 
 			// Redirection vers la page "win"
-			Red("/win", w, r)
+			http.Redirect(w, r, "/win", http.StatusSeeOther)
+			return
 		}
 
 	} else {
 		http.Error(w, "Méthode non supportée", http.StatusMethodNotAllowed)
 	}
-}
-
-func Red(s string, w http.ResponseWriter, r *http.Request) int {
-	log.Println("Méthode:", r.Method, "URL:", r.URL.Path, "Statut:", http.StatusOK)
-	http.Redirect(w, r, s, http.StatusSeeOther)
-	return 0
 }
 
 func main() {
