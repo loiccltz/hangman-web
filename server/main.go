@@ -88,10 +88,10 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 			// Redirection vers la page de "lose"
 			http.Redirect(w, r, "/lose", http.StatusSeeOther)
 			return
-		} else if gs.GameWin {
+		} 
+		 if !gs.ContainsBlanks(gs.GetBlanks()) {
+			// Vérifie si le mot a été complètement trouvé
 			fmt.Println("Mot trouvé avec succès !") // Debug
-			fmt.Printf("Comparaison: '%s' == '%s'\n", strings.ReplaceAll(gs.GetBlanksDisplay(), " ", ""), gs.GetWord())
-
 			// Redirection vers la page "win"
 			http.Redirect(w, r, "/win", http.StatusSeeOther)
 			return
@@ -112,6 +112,6 @@ func main() {
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	fmt.Println("Serveur démarré sur le port 8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe("", nil)
 
 }

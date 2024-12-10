@@ -116,6 +116,15 @@ func UpdateBlanks(letter string) {
 	}
 }
 
+func ContainsBlanks(blanks []rune) bool {
+	for _, char := range blanks {
+		if char == '_' {
+			return true
+		}
+	}
+	return false
+}
+
 // Setters
 func SetLives(lives int) {
 	state.Lives = lives

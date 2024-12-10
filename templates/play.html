@@ -56,6 +56,9 @@ function sendGuess(event) {
         if (data.gameOver) {
             window.location.href = "/lose";
         }
+        if (data.gameWin){
+            window.location.href = "/win";
+        }
     })
     .catch(error => {
         console.error("Erreur :", error.message);
