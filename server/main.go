@@ -112,6 +112,6 @@ func main() {
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	fmt.Println("Serveur démarré sur le port 8080")
-	http.ListenAndServe("", nil)
+	http.ListenAndServe(":8080", nil)
 
 }
