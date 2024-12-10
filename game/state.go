@@ -6,8 +6,6 @@ import (
 	"math/rand"
 	"os"
 	"strings"
-
-
 )
 
 type GameState struct {
@@ -24,9 +22,9 @@ type GameState struct {
 var state GameState
 
 // Initialisation du jeu
-func InitGame() {
+func InitGame(difficulty string) {
 	state.Lives = 10
-	state.Word = GetRandomWord()
+	state.Word = GetRandomWord(difficulty)
 	state.Blanks = make([]rune, len(state.Word))
 	for i := range state.Blanks {
 		state.Blanks[i] = '_'
@@ -74,8 +72,20 @@ func showHangman(stage int) string {
 
 
 
-func GetRandomWord() string {
-	file, err := os.Open("../hangman-classic/dictionnaries/words.txt")
+func GetRandomWord(difficulty string) string {
+
+	var filePath string
+
+	switch difficulty { // permet de switch en fonction de la difficulté
+	case "easy":
+		filePath = "../hangman-classic/dictionnaries/words.txt" // easy
+	case "medium":
+		filePath = "../hangman-classic/dictionnaries/wordsMedium.txt" // medium
+	case "hard":
+		filePath = "../hangman-classic/dictionnaries/wordsHard.txt" // hard
+	}
+
+	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}

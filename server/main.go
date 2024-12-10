@@ -15,18 +15,27 @@ import (
 
 func home(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/home.html"
-	gs.InitGame()
+
+
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)
 		return
 	}
-
+	
 	t.Execute(w, nil)
 }
 
+
 func play(w http.ResponseWriter, r *http.Request) {
 	var fileName = "../templates/play.html"
+	difficulty := r.URL.Query().Get("difficulty")
+	
+	if difficulty == "" {
+		difficulty = "easy" // Par défaut à "easy" si le joueur be choisi pas de diif
+	}
+	
+	gs.InitGame(difficulty) // charge la partie avec la difficulté récup grace a "r.URL.Query().Get"
 	t, err := template.ParseFiles(fileName)
 	if err != nil {
 		fmt.Println("Erreur pendant le parsing", err)

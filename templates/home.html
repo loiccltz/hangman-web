@@ -11,12 +11,17 @@
       <canvas id="canvas">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
       <canvas id="canvas2">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
       <div class="container"> 
-        <button class="button" data-text="Awesome">   
-          <a class="lien" href="/play">
+        <button  id="hangman-button" class="hangman-button" data-text="Awesome">   
+          <a class="lien">
             <span class="actual-text">&nbsp;HANGMAN&nbsp;</span>
             <span aria-hidden="true" class="hover-text">&nbsp;HANGMAN&nbsp;</span>     
           </a>
         </button>
+        <div id="difficulty-buttons" class="hidden">
+          <a class="difficulty-button" href="/play?difficulty=easy">Facile</a>
+          <a class="difficulty-button" href="/play?difficulty=medium">Intermediaire</a>
+          <a class="difficulty-button" href="/play?difficulty=hard">Difficile</a>
+        </div>
       </div>
 
       
@@ -24,6 +29,7 @@
     </body>
 
 <script>
+  
     var canvas = document.getElementById( 'canvas' ),
 		ctx = canvas.getContext( '2d' ),
     canvas2 = document.getElementById( 'canvas2' ),
@@ -102,5 +108,19 @@
     }
 
   update();
+
+  document.getElementById('hangman-button').addEventListener('click', function () {
+    const hangmanButton = document.getElementById('hangman-button');
+    const difficultyButtons = document.getElementById('difficulty-buttons');
+
+    hangmanButton.style.opacity = '0';
+
+    // afficher les difficultés et masquer le bouton hangman
+    setTimeout(() => {
+      hangmanButton.classList.add('hidden'); // meme principe on ajoute la classe hidden ducoup on le cache
+      difficultyButtons.classList.remove('hidden'); // on enleve la classe hiden des boutons et donc on les affiches
+      difficultyButtons.style.opacity = '1';
+    }, 1000); // durée de l'animation en mili-sec donc 1000 = 1 seconde etc
+  });
 </script>
 </html>
