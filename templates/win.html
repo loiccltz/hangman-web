@@ -12,16 +12,14 @@
       <canvas id="canvas">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
       <canvas id="canvas2">Si tu vois ce message, canva n'est pas supporté par ton navigateur</canvas>
       <div class="container"> 
-        <p>dksodkoskodksodkso</p>
-        <button class="button" data-text="Awesome">   
+        <button id="hangman-button" class="hangman-button" data-text="Awesome">   
           <a class="lien" href="/">
             <span class="actual-text">&nbsp;REJOUER&nbsp;</span>
             <span aria-hidden="true" class="hover-text">&nbsp;REJOUER&nbsp;</span>     
           </a>
         </button>
-
+        <h2 class="win-text">Bravo vous avez gagné !</h2>
       </div>
-      <h2 style="display: block; visibility: visible; color: rgb(255, 255, 255); font-size: 3rem; text-align: center;">Tu as gagner</h2>
     </body>
     <script>
         var canvas = document.getElementById( 'canvas' ),
@@ -67,7 +65,7 @@
 
           var r = Math.min(0, Math.floor(colorTransition * 255)); // Augmente les rouge
           var g = Math.max(0, 195 - Math.floor(colorTransition * 255)); // Réduit les vert
-          var b = 255; // change le bleu
+          var b = 250; // change le bleu
 
             ctx.fillStyle = `rgb(${r},${g},${b})`;
             ctx.font = fontSize+"px san-serif";
