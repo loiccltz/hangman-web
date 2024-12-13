@@ -32,9 +32,10 @@ body {
 .difficulty-button {
   margin: 10px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 40px;
   cursor: pointer;
-  color: #36d10f;
+  color: #879781;
+  font-weight: bold;
 }
 
 #difficulty-buttons {
@@ -66,7 +67,7 @@ button {
     --border-right: 6px;
     --text-stroke-color: rgba(255,255,255,0.6);
     --animation-color: #36d10f;
-    --fs-size: 2em;
+    --fs-size: 3em;
     letter-spacing: 3px;
     text-decoration: none;
     font-size: var(--fs-size);

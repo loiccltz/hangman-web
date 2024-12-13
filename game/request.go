@@ -5,8 +5,6 @@ import(
 	"strings"
 	"encoding/json"
 	"fmt"
-
-
 )
 
 type GameStateResponse struct {

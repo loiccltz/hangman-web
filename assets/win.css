@@ -27,6 +27,9 @@ body {
   display: none;
 }
 
+p {
+    color: white;
+}
 
 
 .difficulty-button {

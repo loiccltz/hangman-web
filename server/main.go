@@ -72,7 +72,11 @@ func lose(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Erreur pendant le parsing", err)
 		return
 	}
-	t.Execute(w, nil)
+
+	data := gs.GameState {
+		Word : gs.GetWord(),
+	}
+	t.Execute(w, data)
 }
 
 func win(w http.ResponseWriter, r *http.Request) {
