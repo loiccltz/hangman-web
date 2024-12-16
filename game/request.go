@@ -35,6 +35,7 @@ func HandleGuess(w http.ResponseWriter, r *http.Request) {
 			UpdateBlanks(guess.Letter)
 		} else {
 			state.Lives--
+			
 		}
 		IsWin := !strings.Contains(string(state.Blanks), "_")
 		if len(guess.Letter) >= 2 {
