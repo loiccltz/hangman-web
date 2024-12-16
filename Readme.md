@@ -1,6 +1,6 @@
 # Projet réalisé par Loic Collatuzo / Axel Macé / Alexandre Reffert  
 
-Ce projet a été réalisé en **Golang** pour permettre de jouer.  
+Ce projet a été réalisé en **Golang**.  
 
 ## Instructions pour lancer le jeu :  
 
