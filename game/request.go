@@ -1,30 +1,28 @@
 package state
 
-import(
-	"net/http"
-	"strings"
+import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strings"
 )
 
 type GameStateResponse struct {
-	Blanks string `json:"blanks"`
-    Lives  int    `json:"lives"`
+	Blanks     string `json:"blanks"`
+	Lives      int    `json:"lives"`
 	HangmanArt string `json:"hangmanArt"`
-	GameOver    bool   `json:"gameOver"`
+	GameOver   bool   `json:"gameOver"`
 	GameWin    bool   `json:"gameWin"`
-  }
+}
 
-  type GuessRequest struct {
+type GuessRequest struct {
 	Letter string `json:"letter"`
 }
 
-  
-  func HandleGuess(w http.ResponseWriter, r *http.Request) {
+func HandleGuess(w http.ResponseWriter, r *http.Request) {
 
-	  
-	  if r.Method == http.MethodPost{
-		  
+	if r.Method == http.MethodPost {
+
 		var guess GuessRequest
 
 		err := json.NewDecoder(r.Body).Decode(&guess) // décode le json, c'est pour sa cela ne marchait paaaaas
@@ -34,37 +32,32 @@ type GameStateResponse struct {
 			return
 		}
 
-		  if strings.Contains(state.Word, guess.Letter) {
-			  UpdateBlanks(guess.Letter)
-		  } else {
-			  state.Lives--
-		  }
+		if strings.Contains(state.Word, guess.Letter) {
+			UpdateBlanks(guess.Letter)
+		} else {
+			state.Lives--
+		}
 
-		  IsWin := !strings.Contains(string(state.Blanks), "_")
+		IsWin := !strings.Contains(string(state.Blanks), "_")
 
-			maxLives := 10
-			stage := maxLives - state.Lives
-			hangmanArt := showHangman(stage)
+		maxLives := 10
+		stage := maxLives - state.Lives
+		hangmanArt := showHangman(stage)
 
-  
-		 
-		  response := GameStateResponse{
-			  Lives: state.Lives,
-			  Blanks: GetBlanksDisplay(),
-			  HangmanArt: hangmanArt,
-			  GameOver: GetLives() <= 0,
-			  GameWin:   IsWin,
-		  }
-  
-		 
-		  fmt.Println("Lettre devoné:", guess.Letter)
-		  w.Header().Set("Content-Type", "application/json")
-		  
-		  json.NewEncoder(w).Encode(response)
-  
-	  } else {
-		  http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
-	  }
-  }
-  
+		response := GameStateResponse{
+			Lives:      state.Lives,
+			Blanks:     GetBlanksDisplay(),
+			HangmanArt: hangmanArt,
+			GameOver:   GetLives() <= 0,
+			GameWin:    IsWin,
+		}
 
+		fmt.Println("Lettre devoné:", guess.Letter)
+		w.Header().Set("Content-Type", "application/json")
+
+		json.NewEncoder(w).Encode(response)
+
+	} else {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+	}
+}
