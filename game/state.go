@@ -20,12 +20,26 @@ var state GameState
 // Initialisation du jeu
 func InitGame(difficulty string) {
 	state.Lives = 10
-	state.Word = GetRandomWord(difficulty)
+	state.Word = removeAccents(GetRandomWord(difficulty))
 	state.Blanks = make([]rune, len(state.Word))
 	for i := range state.Blanks {
 		state.Blanks[i] = '_'
 	}
+}	
+
+
+func removeAccents(Word string) string {
+	replacer := strings.NewReplacer(
+		"é", "e", "è", "e", "ê", "e", "ë", "e",
+		"à", "a", "â", "a", "ä", "a",
+		"î", "i", "ï", "i",
+		"ô", "o", "ö", "o",
+		"ù", "u", "û", "u", "ü", "u",
+		"ç", "c",
+	)
+	return replacer.Replace(Word)
 }
+
 
 // fonction utilisé pour le hangman de base
 func showHangman(stage int) string {

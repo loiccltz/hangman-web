@@ -112,6 +112,6 @@ func main() {
 	http.HandleFunc("/win", win)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe("", nil)
 
 }

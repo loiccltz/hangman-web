@@ -31,11 +31,12 @@ func HandleGuess(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Erreur de décodage JSON :", err)
 			return
 		}
-
+		
 		if strings.Contains(state.Word, guess.Letter) {
 			UpdateBlanks(guess.Letter)
 		} else {
 			state.Lives--
+			
 		}
 
 		IsWin := !strings.Contains(string(state.Blanks), "_")
