@@ -37,7 +37,7 @@ func HandleGuess(w http.ResponseWriter, r *http.Request) {
 			state.Lives--
 		}
 		IsWin := !strings.Contains(string(state.Blanks), "_")
-		if len(guess.Letter) > 2 {
+		if len(guess.Letter) >= 2 {
 			// Si l'utilisateur devine un mot entier
 			if guess.Letter == state.Word {
 				IsWin = true 
