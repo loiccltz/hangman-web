@@ -14,7 +14,7 @@
            <pre id="hangmanArt" class="hangman"></pre>
            <h1 id="blanks" class="oui"> {{ .BlanksDisplay }}</h1>
            <form action=""  class="play-form" id="userInputForm" onsubmit="sendGuess(event)">
-               <input type="text"  pattern="[A-Za-zÀ-ÿ]" id="guess" name="letter" required>
+               <input type="text"  pattern="[A-Za-zÀ-ÿ]+" id="guess" name="letter" required>
                <button type="submit">button</button>
             </form>
             <h1 id="lives" class="center"></h1> 
